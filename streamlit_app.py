@@ -9,7 +9,15 @@ from langchain.memory import ConversationBufferMemory
 def get_first_llm_response(llm):
     template = "Ask me a question that will help me narrow down my next travel destination"
     prompt_template = PromptTemplate.from_template(template)
-    chain = LLMChain(llm=llm, prompt=prompt_template, output_key='first_q')
+    name_chain = LLMChain(
+                    llm=llm, 
+                    prompt=prompt_template, 
+                    output_key='first_q'
+                )
+    chain = SequentialChain(
+        chains=[name_chain],
+        output_variables=['first_q']
+    )
     response = chain()
     return response['first_q']
     
