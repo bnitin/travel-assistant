@@ -115,7 +115,9 @@ if prompt and xxx:
 # check if we need to get more input from the user
 if count <= -1:
     next_question = llm_chain({"chat_history" : messages, "response": prompt})["text"]
-    prompt = st.text_input(next_question)
+    st.text(next_question)
+    #prompt = st.text_input(next_question)
+    prompt = st.text_input("Tell me man...")
     if prompt:
         st.session_state['prompt'] = prompt
         st.text(prompt)
