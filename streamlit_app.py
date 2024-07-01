@@ -11,17 +11,6 @@ def get_first_llm_response(llm):
     prompt_template = PromptTemplate.from_template(template)
     response = llm.predict("Ask me a question that will help me narrow down my next travel destination")
     return response
-    name_chain = LLMChain(
-                    llm=llm, 
-                    prompt=prompt_template, 
-                    output_key='first_q'
-                )
-    #chain = SequentialChain(
-    #    chains=[name_chain],
-    #    output_variables=['first_q']
-    #)
-    response = name_chain.run()
-    return response
     
 def get_llm_chain(llm):
     template = """You are a chatbot having a conversation with a human. 
@@ -90,6 +79,7 @@ llm = OpenAI(model_name="gpt-3.5-turbo-instruct", temperature = 0.6)
 messages = []
 prompt = ""
 count = 0
+next_question = ""
 llm_chain = None
 
 # initialize and setup session state
@@ -109,31 +99,29 @@ if 'messages' not in st.session_state:
     st.session_state['messages'] = messages
 else:
     messages = st.session_state['messages']
-if 'prompt' in st.session_state:
-    prompt = st.session_state['prompt']
+
 
 # let the user know what we intend to do if they are interacting with this for the first time
-if st.session_state['count'] == 0:
+if count == 0:
     st.text("I am your travel assistant. Let's help you choose your next travel destination")
+    next_question = get_first_llm_response(llm)
+    messages.append(next_question)
+    st.session_state['next_question'] = next_question
+
+next_question = st.session_state['next_question']
 
 st.text(count)
 st.text(messages)
-st.text(prompt)
-
-#debug
-if count == 0:
-    next_question = get_first_llm_response(llm)
-    st.text(next_question)
     
 # check if we need to get more input from the user
 if count < 2:
-    next_question = llm_chain.invoke({"chat_history" : messages, "response": prompt})["text"]
     prompt = st.text_input(next_question)
     if prompt:
-        st.session_state['prompt'] = prompt
-        st.text(prompt)
+        st.session_state['next_question'] = next_question
+        messages.append(prompt)
+        next_question = llm_chain.invoke({"chat_history" : messages, "response": prompt})["text"]
+        st.session_state['next_question'] = next_question
         messages.append(next_question)
-        messages.append(st.session_state['prompt'])
         st.session_state['messages'] = messages
         st.session_state['count'] = count + 1
 else:
@@ -147,4 +135,4 @@ else:
     del st.session_state['count']
     del st.session_state['llm_chain']
     del st.session_state['messages']
-    del st.session_state['prompt']
+    del st.session_state['next_question']
