@@ -56,10 +56,15 @@ llm = OpenAI(model_name="gpt-3.5-turbo-instruct", temperature = 0.6)
 messages = []
 prompt = None
 count = 0
+llm_chain = None
 
 # initialize and setup session state
 if 'llm_chain' not in st.session_state:
-    st.session_state['llm_chain'] = get_llm_chain()
+    llm_chain = get_llm_chain()
+    st.session_state['llm_chain'] = llm_chain
+else:
+    llm_chain = st.session_state['llm_chain']
+    
 if 'count' not in st.session_state:
     st.session_state['count'] = 0
 else:
