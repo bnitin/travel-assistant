@@ -37,8 +37,6 @@ def get_llm_chain_from_session() -> LLMChain:
 def generate_next_question(chat_history):
     if chat_history is None:
         chat_history = []
-
-def generate_initial_prompt():
     
 
 def generate_baby_names(gender: str,nationality:str) -> list[str]:
