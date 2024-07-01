@@ -98,37 +98,22 @@ if 'prompt' in st.session_state:
 if st.session_state['count'] == 0:
     st.text("I am your travel assistant. Let's help you choose your next travel destination")
 
-#debug
-xxx = None
-next_question = llm_chain.invoke({"chat_history" : messages, "response": prompt})["text"]
-st.text(next_question)
-if next_question:
-    prompt = st.text_input("Hey ...what's up...")
-    if prompt:
-        st.text(prompt)
-        xxx = st.text_input("hello")
-        time.sleep(5)
-
-if prompt and xxx:
-    st.text("what !!!")
-    time.sleep(5)
+st.text(count)
+st.text(messages)
+st.text(prompt)
 
 # check if we need to get more input from the user
-if count <= -1:
-    next_question = llm_chain({"chat_history" : messages, "response": prompt})["text"]
-    st.text(next_question)
-    #prompt = st.text_input(next_question)
-    prompt = st.text_input("Tell me man...")
+if count < 2:
+    next_question = llm_chain.invoke({"chat_history" : messages, "response": prompt})["text"]
+    prompt = st.text_input(next_question)
     if prompt:
         st.session_state['prompt'] = prompt
         st.text(prompt)
-        xxx = st.text_input("hello")
-        if xxx:
-            messages.append(next_question)
-            messages.append(st.session_state['prompt'])
-            st.session_state['messages'] = messages
-            st.session_state['count'] = count + 1
-elif count > 100:
+        messages.append(next_question)
+        messages.append(st.session_state['prompt'])
+        st.session_state['messages'] = messages
+        st.session_state['count'] = count + 1
+else:
     # lets let the user know their travel options
     #response = generate_travel_options(st.session_state['llm_chain'], messages)
     #travel_options = response['travel'].strip().split(",")
