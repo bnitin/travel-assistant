@@ -104,7 +104,7 @@ if count <= 1:
     if prompt:
         st.session_state['prompt'] = prompt
         st.text(prompt)
-        xxx = st.text_input(prompt)
+        xxx = st.text_input("hello")
         if xxx:
             messages.append(next_question)
             messages.append(st.session_state['prompt'])
