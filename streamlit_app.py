@@ -10,7 +10,7 @@ def get_first_llm_response(llm):
     template = "Ask me a question that will help me narrow down my next travel destination"
     prompt_template = PromptTemplate.from_template(template)
     response = llm.predict("Ask me a question that will help me narrow down my next travel destination")
-    return response
+    return response["text"[
     
 def get_llm_chain(llm):
     template = """You are a chatbot having a conversation with a human. 
