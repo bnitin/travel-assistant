@@ -5,7 +5,7 @@ from langchain.chains import LLMChain
 from langchain.chains import SequentialChain
 from langchain.memory import ConversationBufferMemory
 
-def get_llm_chain():
+def get_llm_chain(llm):
     template = """You are a chatbot having a conversation with a human. 
                 You will advise the human on choosing a travel destination
                 If there is no prior chat history, then ask a random question to help narrow
@@ -60,7 +60,7 @@ llm_chain = None
 
 # initialize and setup session state
 if 'llm_chain' not in st.session_state:
-    llm_chain = get_llm_chain()
+    llm_chain = get_llm_chain(llm)
     st.session_state['llm_chain'] = llm_chain
 else:
     llm_chain = st.session_state['llm_chain']
