@@ -100,6 +100,8 @@ if 'messages' not in st.session_state:
 else:
     messages = st.session_state['messages']
 
+st.text(count)
+st.text(messages)
 
 # let the user know what we intend to do if they are interacting with this for the first time
 if count == 0:
@@ -109,9 +111,6 @@ if count == 0:
     st.session_state['next_question'] = next_question
 
 next_question = st.session_state['next_question']
-
-st.text(count)
-st.text(messages)
     
 # check if we need to get more input from the user
 if count < 2:
