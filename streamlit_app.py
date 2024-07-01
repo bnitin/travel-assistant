@@ -106,7 +106,7 @@ if prompt:
     time.sleep(5)
 
 # check if we need to get more input from the user
-if count <= 1:
+if count <= -1:
     next_question = llm_chain({"chat_history" : messages, "response": prompt})["text"]
     prompt = st.text_input(next_question)
     if prompt:
