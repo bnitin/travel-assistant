@@ -103,6 +103,11 @@ st.text(count)
 st.text(messages)
 st.text(prompt)
 
+#debug
+if count == 0:
+    next_question = llm.invoke("Ask me a question that can help me decide my next travel destination")["text"]
+    st.text(next_question)
+    
 # check if we need to get more input from the user
 if count < 2:
     next_question = llm_chain.invoke({"chat_history" : messages, "response": prompt})["text"]
