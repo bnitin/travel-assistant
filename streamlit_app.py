@@ -70,7 +70,7 @@ llm = OpenAI(model_name="gpt-3.5-turbo-instruct", temperature = 0.6)
 
 # Initialize Chat history
 messages = []
-prompt = None
+prompt = ""
 count = 0
 llm_chain = None
 
