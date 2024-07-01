@@ -101,8 +101,9 @@ if st.session_state['count'] == 0:
 #debug
 xxx = None
 next_question = llm_chain.invoke({"chat_history" : messages, "response": prompt})["text"]
+st.text(next_question)
 if next_question:
-    prompt = st.text_input(next_question)
+    prompt = st.text_input("Hey ...what's up...")
     if prompt:
         st.text(prompt)
         xxx = st.text_input("hello")
