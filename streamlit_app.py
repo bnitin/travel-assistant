@@ -39,7 +39,7 @@ def get_llm_chain(llm):
     
     # Notice that we need to align the `memory_key`
     memory = ConversationBufferMemory(memory_key="chat_history")
-    conversation = LLMChain(
+    conversation = LLM(
         llm=llm,
         prompt=prompt_template,
         verbose=True,
