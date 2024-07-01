@@ -100,12 +100,14 @@ if st.session_state['count'] == 0:
 # check if we need to get more input from the user
 if count <= 0:
     next_question = llm_chain({"chat_history" : messages, "response": prompt})["text"]
-    st.session_state['prompt'] = st.chat_input(next_question)
-    st.write(st.session_state['prompt'])
-    messages.append(next_question)
-    messages.append(st.session_state['prompt'])
-    st.session_state['messages'] = messages
-    st.session_state['count'] = count + 1
+    prompt = st.chat_input(next_question)
+    if prompt:
+        st.session_state['prompt'] = prompt
+        st.write(st.session_state['prompt'])
+        messages.append(next_question)
+        messages.append(st.session_state['prompt'])
+        st.session_state['messages'] = messages
+        st.session_state['count'] = count + 1
 else:
     # lets let the user know their travel options
     #response = generate_travel_options(st.session_state['llm_chain'], messages)
