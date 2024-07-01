@@ -19,7 +19,23 @@ def get_llm_chain(llm):
     New question to human based on conversation:
     Question:"""
 
-    prompt_template = PromptTemplate.from_template(template)
+    #prompt_template = PromptTemplate.from_template(template)
+
+    prompt_template = PromptTemplate(    
+        template="""= You are a chatbot having a conversation with a human. 
+                You will advise the human on choosing a travel destination
+                If there is no prior chat history, then ask a random question to help narrow
+                down the travel destination.
+
+        Previous conversation regarding travel preference: {chat_history}
+
+        Human response based on conversation: {response}
+        
+        New question to human based on conversation:
+        Question:""",
+        input_variables=['chat_history', 'response']
+    )
+    
     
     # Notice that we need to align the `memory_key`
     memory = ConversationBufferMemory(memory_key="chat_history")
