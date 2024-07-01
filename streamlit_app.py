@@ -39,7 +39,7 @@ def get_llm_chain(llm):
     
     # Notice that we need to align the `memory_key`
     memory = ConversationBufferMemory(memory_key="chat_history")
-    conversation = LLM(
+    conversation = LLMChain(
         llm=llm,
         prompt=prompt_template,
         verbose=True,
@@ -103,7 +103,7 @@ prompt = st.text_input(next_question)
 if prompt:
     st.text(prompt)
     xxx = st.text_input("hello")
-
+    time.sleep(5)
 
 # check if we need to get more input from the user
 if count <= 1:
