@@ -33,10 +33,6 @@ def get_llm_chain():
 
 def get_llm_chain_from_session() -> LLMChain:
     return st.session_state['llm_chain']
-
-def generate_next_question(chat_history):
-    if chat_history is None:
-        chat_history = []
     
 
 def generate_baby_names(gender: str,nationality:str) -> list[str]:
@@ -100,12 +96,12 @@ if 'llm_chain' not in st.session_state:
     st.session_state['llm_chain'] = get_llm_chain()
 if 'count' not in st.session_state:
     st.session_state['count'] = 0
-else
+else:
     count = st.session_state['count']
     
 if 'messages' not in st.session_state:
     st.session_state['messages'] = messages
-else
+else:
     messages = st.session_state['messages']
 if 'prompt' in st.session_state:
     prompt = st.session_state['prompt']
@@ -122,7 +118,6 @@ if count <= 5:
     messages.append(st.session_state['prompt'])
     st.session_state['messages'] = messages
     st.session_state['count'] = count + 1
-
 else:
     # lets let the user know their travel options
     #response = generate_travel_options(st.session_state['llm_chain'], messages)
