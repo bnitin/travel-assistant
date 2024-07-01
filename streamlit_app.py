@@ -86,6 +86,7 @@ if 'count' not in st.session_state:
     st.session_state['count'] = 0
 else:
     count = st.session_state['count']
+    st.session_state['count'] = count + 1
 
 if 'messages' not in st.session_state:
     st.session_state['messages'] = messages
