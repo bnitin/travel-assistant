@@ -98,9 +98,10 @@ if st.session_state['count'] == 0:
     st.text("I am your travel assistant. Let's help you choose your next travel destination")
 
 # check if we need to get more input from the user
-if count <= 5:
+if count <= 0:
     next_question = llm_chain({"chat_history" : messages, "response": prompt})["text"]
     st.session_state['prompt'] = st.chat_input(next_question)
+    st.write(st.session_state['prompt'])
     messages.append(next_question)
     messages.append(st.session_state['prompt'])
     st.session_state['messages'] = messages
