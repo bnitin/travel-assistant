@@ -99,13 +99,14 @@ if st.session_state['count'] == 0:
     st.text("I am your travel assistant. Let's help you choose your next travel destination")
 
 #debug
-next_question = llm_chain({"chat_history" : messages, "response": prompt})["text"]
-prompt = st.text_input(next_question)
 xxx = None
-if prompt:
-    st.text(prompt)
-    xxx = st.text_input("hello")
-    time.sleep(5)
+next_question = llm_chain({"chat_history" : messages, "response": prompt})["text"]
+if next_question:
+    prompt = st.text_input(next_question)
+    if prompt:
+        st.text(prompt)
+        xxx = st.text_input("hello")
+        time.sleep(5)
 
 if prompt and xxx:
     st.text("what !!!")
