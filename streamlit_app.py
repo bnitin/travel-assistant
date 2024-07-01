@@ -103,11 +103,12 @@ if count <= 0:
     prompt = st.chat_input(next_question)
     if prompt:
         st.session_state['prompt'] = prompt
-        st.chat_input(prompt)
-        messages.append(next_question)
-        messages.append(st.session_state['prompt'])
-        st.session_state['messages'] = messages
-        st.session_state['count'] = count + 1
+        xxx = st.chat_input(prompt)
+        if xxx:
+            messages.append(next_question)
+            messages.append(st.session_state['prompt'])
+            st.session_state['messages'] = messages
+            st.session_state['count'] = count + 1
 else:
     # lets let the user know their travel options
     #response = generate_travel_options(st.session_state['llm_chain'], messages)
