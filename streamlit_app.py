@@ -35,40 +35,6 @@ def get_llm_chain_from_session() -> LLMChain:
     return st.session_state['llm_chain']
     
 
-def generate_baby_names(gender: str,nationality:str) -> list[str]:
-    """
-    Generate a list of 5 baby names
-
-    Parameters:
-    gender (str): gender of baby
-    nationailty (str) : nationailty of baby
-
-    Returns:
-    list: list of baby names
-    """
-
-    prompt_template_name = PromptTemplate(
-        input_variables=['gender', 'nationality'],
-        template="""I want to find a name for a {nationality} {gender} baby. 
-                    Suggest top 5 popular names for the baby.
-                    Return it as a comma separated list """
-                )
-
-    name_chain = LLMChain(llm=llm,
-                          prompt=prompt_template_name,
-                          output_key='baby_names')
-
-    chain = SequentialChain(
-        chains=[name_chain],
-        input_variables=['gender', 'nationality'],
-        output_variables=['baby_names']
-    )
-
-    response = chain({'gender': gender,
-                      'nationality': nationality})
-    return response
-
-
 # main code
 st.title('Travel assistant')
 
