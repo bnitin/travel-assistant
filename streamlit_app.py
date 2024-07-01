@@ -10,7 +10,7 @@ def get_first_llm_response(llm):
     template = "Ask me a question that will help me narrow down my next travel destination"
     prompt_template = PromptTemplate.from_template(template)
     chain = LLMChain(llm=llm, prompt=prompt_template)
-    response = chain.invoke()["text"]
+    response = chain()["text"]
     return response
     
 def get_llm_chain(llm):
