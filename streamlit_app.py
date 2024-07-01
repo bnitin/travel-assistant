@@ -119,6 +119,7 @@ if count < 2:
     if prompt:
         st.session_state['next_question'] = next_question
         messages.append(prompt)
+        st.text(messages)
         next_question = llm_chain.invoke({"chat_history" : messages, "response": prompt})["text"]
         st.session_state['next_question'] = next_question
         messages.append(next_question)
