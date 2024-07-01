@@ -6,6 +6,13 @@ from langchain.chains import LLMChain
 from langchain.chains import SequentialChain
 from langchain.memory import ConversationBufferMemory
 
+def get_first_llm_response(llm):
+    template = "Ask me a question that will help me narrow down my next travel destination"
+    prompt_template = PromptTemplate.from_template(template)
+    chain = LLMChain(llm=llm, prompt=prompt_template)
+    response = chain.invoke()["text"]
+    return response
+    
 def get_llm_chain(llm):
     template = """You are a chatbot having a conversation with a human. 
                 You will advise the human on choosing a travel destination
@@ -105,7 +112,7 @@ st.text(prompt)
 
 #debug
 if count == 0:
-    next_question = llm.invoke("Ask me a question that can help me decide my next travel destination")["text"]
+    next_question = get_first_llm_response(llm)
     st.text(next_question)
     
 # check if we need to get more input from the user
