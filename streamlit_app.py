@@ -85,7 +85,6 @@ if 'count' not in st.session_state:
     st.session_state['count'] = 0
 else:
     count = st.session_state['count']
-st.text(count)
 
 if 'messages' not in st.session_state:
     st.session_state['messages'] = messages
@@ -104,13 +103,14 @@ if count <= 1:
     prompt = st.text_input(next_question)
     if prompt:
         st.session_state['prompt'] = prompt
+        st.text(prompt)
         xxx = st.text_input(prompt)
         if xxx:
             messages.append(next_question)
             messages.append(st.session_state['prompt'])
             st.session_state['messages'] = messages
             st.session_state['count'] = count + 1
-else:
+elif count > 100:
     # lets let the user know their travel options
     #response = generate_travel_options(st.session_state['llm_chain'], messages)
     #travel_options = response['travel'].strip().split(",")
