@@ -9,6 +9,8 @@ from langchain.memory import ConversationBufferMemory
 def get_first_llm_response(llm):
     template = "Ask me a question that will help me narrow down my next travel destination"
     prompt_template = PromptTemplate.from_template(template)
+    response = llm.predict(prompt_template)
+    return response
     name_chain = LLMChain(
                     llm=llm, 
                     prompt=prompt_template, 
