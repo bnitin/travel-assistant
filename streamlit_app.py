@@ -14,12 +14,12 @@ def get_first_llm_response(llm):
                     prompt=prompt_template, 
                     output_key='first_q'
                 )
-    chain = SequentialChain(
-        chains=[name_chain],
-        output_variables=['first_q']
-    )
-    response = chain()
-    return response['first_q']
+    #chain = SequentialChain(
+    #    chains=[name_chain],
+    #    output_variables=['first_q']
+    #)
+    response = name_chain.run()
+    return response
     
 def get_llm_chain(llm):
     template = """You are a chatbot having a conversation with a human. 
