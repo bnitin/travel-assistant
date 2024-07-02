@@ -36,7 +36,8 @@ def get_llm_chain(llm):
 
         Previous conversation regarding travel preference: {chat_history}
         
-        New question to human based on conversation:""",
+        New question to human based on conversation:
+        """,
         input_variables=['chat_history']
     )
     
