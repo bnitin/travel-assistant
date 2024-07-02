@@ -93,6 +93,7 @@ st.text(st.session_state['count'])
 
 # let the user know what we intend to do if they are interacting with this for the first time
 if st.session_state['count'] == 0:
+    st.session_state['count'] = st.session_state['count'] + 1
     next_question = get_first_llm_response(llm)
     messages.append(next_question)
     st.session_state['messages'] = messages
@@ -100,7 +101,7 @@ if st.session_state['count'] == 0:
     st.session_state['count'] = st.session_state['count'] + 1
 
 # check if we need to get more input from the user
-elif st.session_state['count'] < 3:
+if st.session_state['count'] < 3:
     st.text("bbbb: " + st.session_state['next_question'])
     st.text(st.session_state['messages'])
     prompt = st.text_input(st.session_state['next_question'])
