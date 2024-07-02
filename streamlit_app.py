@@ -88,6 +88,9 @@ if 'messages' not in st.session_state:
 else:
     messages = st.session_state['messages']
 
+if 'next_question' not in st.session_state:
+    st.session_state.next_question = ""
+
 st.text("I am your travel assistant. Let's help you choose your next travel destination")
 st.text(st.session_state['count'])
 
