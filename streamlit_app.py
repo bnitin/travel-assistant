@@ -108,11 +108,12 @@ if count == 0:
     next_question = get_first_llm_response(llm)
     messages.append(next_question)
     st.session_state['next_question'] = next_question
+    count += 1
+    st.session_state['count'] = count
 
-next_question = st.session_state['next_question']
-    
 # check if we need to get more input from the user
-if count < 2:
+elif count < 3:
+    next_question = st.session_state['next_question']
     prompt = st.text_input(next_question)
     if prompt:
         st.session_state['next_question'] = next_question
@@ -121,7 +122,7 @@ if count < 2:
         st.session_state['messages'] = messages
         count += 1
         st.session_state['count'] = count
-        if count < 2:
+        if count < 3:
             next_question = llm_chain.invoke({"chat_history" : messages, "response": prompt})["text"]
             st.session_state['next_question'] = next_question
             messages.append(next_question)
