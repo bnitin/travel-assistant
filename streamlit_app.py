@@ -101,11 +101,9 @@ if st.session_state['count'] == 0:
     messages.append(next_question)
     st.session_state['messages'] = messages
     st.session_state['next_question'] = next_question.strip()
-    st.experimental_rerun()
 
 # check if we need to get more input from the user
-if st.session_state['count'] < 3:
-    st.text("bbbb: " + st.session_state['next_question'])
+if st.session_state['count'] < 5:
     st.text(st.session_state['messages'])
     prompt = st.text_input(st.session_state['next_question'])
     if prompt:
