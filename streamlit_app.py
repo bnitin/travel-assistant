@@ -43,14 +43,14 @@ def get_next_question(llm, count, messages):
         return None
     
 def reset_state():
-    if st.session_state['count']:
-        del st.session_state['count']
-    if st.session_state['llm_chain']:
-        del st.session_state['llm_chain']
-    if st.session_state['messages']:
-        del st.session_state['messages']
-    if st.session_state['next_question']:
-        del st.session_state['next_question']
+    if st.session_state.count:
+        del st.session_state.count
+    if st.session_state.llm_chain:
+        del st.session_state.lm_chain
+    if st.session_state.messages:
+        del st.session_state.messages
+    if st.session_state.next_question:
+        del st.session_state.next_question
 
 ############################################
 
