@@ -76,7 +76,7 @@ llm = OpenAI(model_name="gpt-3.5-turbo-instruct", temperature = 0.6)
 messages = []
 prompt = ""
 count = 0
-next_question = ""
+next_question = None
 llm_chain = None
 
 # initialize and setup session state
@@ -108,18 +108,18 @@ if next_question:
     messages.append(next_question)
     st.session_state.messages = messages
     st.session_state.next_question = next_question.strip()
-    st.session_state.count += 1
-
+    
     # get input from user
     prompt = st.text_input(label=next_question)
     if prompt:
+        st.session_state.count += 1
         messages = st.session_state.messages
         messages.append(prompt)
         st.text(prompt)
         st.text(messages)
         st.session_state.messages = messages
 
-else:
+if st_session_state.count > 100:
     # lets let the user know their travel options
     st.text(st.session_state.messages)
     #response = generate_travel_options(st.session_state['llm_chain'], messages)
