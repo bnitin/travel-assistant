@@ -54,7 +54,7 @@ st.title('Travel assistant')
 # get open AI key from user
 with st.sidebar:
     openai_api_key = st.text_input("OpenAI API Key", key="chatbot_api_key", type="password")
-    st.button('New search', on_click=reset_state)
+    #st.button('New search', on_click=reset_state)
 
 if not openai_api_key:
     st.info("Please add your OpenAI API key to continue.")
