@@ -132,7 +132,7 @@ if count < 3:
         st.session_state['count'] = count
         if count < 4:
             st.text(messages)
-            next_question = llm_chain.invoke({"chat_history" : messages})["text"]
+            next_question = llm_chain.invoke('chat_history' : messages)["text"]
             st.session_state['next_question'] = next_question
             messages.append(next_question)
         
