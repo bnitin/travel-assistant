@@ -103,8 +103,8 @@ if count == 0:
 
 # check if we need to get more input from the user
 if count < 3:
-    st.text("bbbb: " + next_question)
     next_question = st.session_state['next_question']
+    st.text("bbbb: " + next_question)
     prompt = st.text_input(next_question)
     if prompt:
         messages.append(prompt)
