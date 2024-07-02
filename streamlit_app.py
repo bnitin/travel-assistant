@@ -97,7 +97,7 @@ st.text(count)
 if count == 0:
     next_question = get_first_llm_response(llm)
     messages.append(next_question)
-    st.session_state['next_question'] = next_question
+    st.session_state['next_question'] = next_question.strip()
     count += 1
     st.session_state['count'] = count
 
