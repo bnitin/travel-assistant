@@ -118,7 +118,7 @@ if count < 3:
         st.session_state['next_question'] = next_question
         messages.append(next_question)
 
-if 3 > 2:
+if count > 100:
     # lets let the user know their travel options
     #response = generate_travel_options(st.session_state['llm_chain'], messages)
     #travel_options = response['travel'].strip().split(",")
