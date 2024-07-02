@@ -119,11 +119,11 @@ if next_question:
     
     # get input from user
     prompt = st.text_input(label=next_question, on_change=update_prompt, key='text_key')
-    if prompt:
-        messages = st.session_state.messages
-        messages.append(prompt)
-        st.text(prompt)
-        st.session_state.messages = messages
+    #if prompt:
+    #    messages = st.session_state.messages
+    #    messages.append(prompt)
+    #    st.text(prompt)
+    #    st.session_state.messages = messages
 
 else:
     # lets let the user know their travel options
