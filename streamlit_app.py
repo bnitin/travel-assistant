@@ -35,12 +35,9 @@ def get_llm_chain(llm):
                 down the travel destination.
 
         Previous conversation regarding travel preference: {chat_history}
-
-        Human response based on conversation: {response}
         
-        New question to human based on conversation:
-        Question:""",
-        input_variables=['chat_history', 'response']
+        New question to human based on conversation:""",
+        input_variables=['chat_history']
     )
     
     
@@ -58,11 +55,14 @@ def get_llm_chain_from_session() -> LLMChain:
     return st.session_state['llm_chain']
 
 def reset_state():
-    del st.session_state['count']
-    del st.session_state['llm_chain']
-    del st.session_state['messages']
-    del st.session_state['next_question']
-
+    if st.session_state['count']
+        del st.session_state['count']
+    if st.session_state['llm_chain']
+        del st.session_state['llm_chain']
+    if st.session_state['messages']
+        del st.session_state['messages']
+    if st.session_state['next_question']
+        del st.session_state['next_question']
 
 # main code
 st.title('Travel assistant')
@@ -123,16 +123,17 @@ if count < 3:
     next_question = st.session_state['next_question']
     prompt = st.text_input(next_question)
     if prompt:
-        st.session_state['next_question'] = next_question
-        messages.append(prompt)
+        #st.session_state['next_question'] = next_question
         #st.text(messages)
+        messages.append(prompt)
         st.session_state['messages'] = messages
         count += 1
         st.session_state['count'] = count
         if count < 4:
-            next_question = llm_chain.invoke({"chat_history" : messages, "response": prompt})["text"]
+            next_question = llm_chain.invoke({"chat_history" : messages})["text"]
             st.session_state['next_question'] = next_question
             messages.append(next_question)
+        
 else:
     # lets let the user know their travel options
     #response = generate_travel_options(st.session_state['llm_chain'], messages)
