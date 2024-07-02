@@ -125,7 +125,7 @@ if next_question:
         st.text(prompt)
         st.session_state.messages = messages
 
-if st.session_state.count > 100:
+else:
     # lets let the user know their travel options
     st.text(st.session_state.messages)
     #response = generate_travel_options(st.session_state['llm_chain'], messages)
