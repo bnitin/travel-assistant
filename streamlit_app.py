@@ -49,8 +49,6 @@ def reset_state():
         del st.session_state.llm_chain
     if st.session_state.messages:
         del st.session_state.messages
-    if st.session_state.next_question:
-        del st.session_state.next_question
 
 def update_prompt():
     prompt = st.session_state.text_key
@@ -100,9 +98,6 @@ if 'messages' not in st.session_state:
 else:
     messages = st.session_state.messages
 
-if 'next_question' not in st.session_state:
-    st.session_state.next_question = ""
-
 st.text("I am your travel assistant. Let's help you choose your next travel destination")
 st.text(st.session_state.count)
 
@@ -113,27 +108,20 @@ next_question = get_next_question(llm, st.session_state.count, messages)
 if next_question:
     messages.append(next_question)
     st.session_state.messages = messages
-    st.session_state.next_question = next_question.strip()
     st.session_state.count += 1
     st.text(messages)
     
     # get input from user
     prompt = st.text_input(label=next_question, on_change=update_prompt, key='text_key')
-    #if prompt:
-    #    messages = st.session_state.messages
-    #    messages.append(prompt)
-    #    st.text(prompt)
-    #    st.session_state.messages = messages
 
 else:
     # lets let the user know their travel options
-    st.text(st.session_state.messages)
-    #response = generate_travel_options(st.session_state['llm_chain'], messages)
+    #st.text(st.session_state.messages)
+    #response = generate_travel_options(llm, messages)
     #travel_options = response['travel'].strip().split(",")
     st.write("** Top destinations for you **")
     #for name in travel_options:
     #    st.write("--", name)
-    del st.session_state.count
-    del st.session_state.llm_chain
-    del st.session_state.messages
-    del st.session_state.next_question
+    
+    # cleanup state
+    reset_state()
