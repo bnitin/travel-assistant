@@ -103,8 +103,10 @@ if st.session_state['count'] < 3:
     st.text("bbbb: " + st.session_state['next_question'])
     prompt = st.text_input(st.session_state['next_question'])
     if prompt:
-        st.session_state['messages'] = st.session_state['messages'].append(prompt)
-        #st.session_state['messages'] = messages
+        messages = st.session_state['messages']
+        messages.append(prompt)
+        #st.session_state['messages'] = st.session_state['messages'].append(prompt)
+        st.session_state['messages'] = messages
         st.session_state['count'] = st.session_state['count'] + 1
         history = '\n'.join(st.session_state['messages'])
         next_question = llm_chain.invoke({"chat_history" : history})["text"]
