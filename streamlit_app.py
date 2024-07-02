@@ -3,11 +3,6 @@ import time
 from langchain.llms import OpenAI
 from langchain.prompts import PromptTemplate
 from langchain.chains import LLMChain
-from langchain.chains import SequentialChain
-from langchain.memory import ConversationBufferMemory
-from streamlit.logger import get_logger
-import logging
-import threading
 
 def get_first_llm_response(llm):
     template = "Ask me a question that will help me narrow down my next travel destination"
@@ -26,15 +21,11 @@ def get_llm_chain(llm):
         """,
         input_variables=["chat_history"]
     )
-    
-    
-    # Notice that we need to align the `memory_key`
-    #memory = ConversationBufferMemory(memory_key="chat_history")
+        
     conversation = LLMChain(
         llm=llm,
         prompt=prompt_template,
         verbose=True
-        #memory=memory
     )
     return conversation
 
@@ -52,11 +43,6 @@ def reset_state():
         del st.session_state['next_question']
 
 ############################################
-
-LOGGER = get_logger(__file__)
-LOGGER.setLevel(logging.DEBUG)
-
-LOGGER.debug(f'start of streamlit_test, {threading.get_ident()}')
 
 # main code
 st.title('Travel assistant')
@@ -94,9 +80,9 @@ if 'count' not in st.session_state:
     st.session_state['count'] = 0
 
 if 'messages' not in st.session_state:
-    st.session_state['messages'] = []
+    st.session_state.messages = []
 else:
-    messages = st.session_state['messages']
+    messages = st.session_state.messages
 
 if 'next_question' not in st.session_state:
     st.session_state.next_question = ""
@@ -105,31 +91,33 @@ st.text("I am your travel assistant. Let's help you choose your next travel dest
 st.text(st.session_state['count'])
 
 # let the user know what we intend to do if they are interacting with this for the first time
-if st.session_state['count'] == 0:
-    st.session_state['count'] = 1
+if st.session_state.count == 0:
+    st.session_state.count = 1
     next_question = get_first_llm_response(llm)
+elif st.session_state.count < 4:
+    history = '\n'.join(messages)        
+    next_question = llm_chain.invoke({"chat_history" : history})["text"]
     messages.append(next_question)
-    st.session_state['messages'] = messages
-    st.session_state['next_question'] = next_question.strip()
+    st.session_state.messages = messages
+    st.session_state.next_question = next_question.strip()
+    st.session_state.count += 1
 
 # check if we need to get more input from the user
-if st.session_state['count'] < 5:
-    #st.text(st.session_state['messages'])
+if st.session_state.count < 5:
     st.text(st.session_state.next_question)
-    prompt = st.text_input(label=st.session_state['next_question'])
-    #prompt = st.text_input("")
+    prompt = st.text_input(label=st.session_state.next_question)
     if prompt:
-        messages = st.session_state['messages']
+        messages = st.session_state.messages
         messages.append(prompt)
-        st.session_state['messages'] = messages
-        st.session_state['count'] = st.session_state['count'] + 1
-        history = '\n'.join(messages)
-        st.session_state['next_question'] = "xyz"
-        next_question = llm_chain.invoke({"chat_history" : history})["text"]
-        st.session_state['next_question'] = next_question.strip()
-        messages.append(next_question.strip())
-        st.session_state['messages'] = messages
-        st.text(st.session_state['next_question'])
+        st.session_state.messages = messages
+        #st.session_state.count += 1
+        #history = '\n'.join(messages)
+        #st.session_state.next_question = "xyz"
+        #next_question = llm_chain.invoke({"chat_history" : history})["text"]
+        #st.session_state.next_question = next_question.strip()
+        #messages.append(next_question.strip())
+        #st.session_state.messages = messages
+        #st.text(st.session_state.next_question)
 
 elif st.session_state['count'] > 100:
     # lets let the user know their travel options
