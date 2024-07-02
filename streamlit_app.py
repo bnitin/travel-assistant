@@ -57,8 +57,8 @@ with st.sidebar:
     st.button('New search', on_click=reset_state)
 
 if not openai_api_key:
-        st.info("Please add your OpenAI API key to continue.")
-        st.stop()
+    st.info("Please add your OpenAI API key to continue.")
+    st.stop()
     
 # initialize Open AI
 import os
@@ -90,6 +90,9 @@ if 'messages' not in st.session_state:
 else:
     messages = st.session_state['messages']
 
+if 'next_question' in st.session_state:
+    next_question = st.session_state['next_question']
+
 st.text("I am your travel assistant. Let's help you choose your next travel destination")
 st.text(count)
 
@@ -103,7 +106,7 @@ if count == 0:
 
 # check if we need to get more input from the user
 if count < 3:
-    next_question = st.session_state['next_question']
+    #next_question = st.session_state['next_question']
     st.text("bbbb: " + next_question)
     prompt = st.text_input(next_question)
     if prompt:
@@ -114,8 +117,9 @@ if count < 3:
         history = '\n'.join(messages)
         next_question = llm_chain.invoke({"chat_history" : history})["text"]
         st.session_state['next_question'] = next_question.strip()
-        st.text(st.session_state['next_question'])
         messages.append(next_question)
+        st.session_state['messages'] = messages
+        st.text(st.session_state['next_question'])
 
 if count > 100:
     # lets let the user know their travel options
