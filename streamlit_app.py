@@ -5,6 +5,9 @@ from langchain.prompts import PromptTemplate
 from langchain.chains import LLMChain
 from langchain.chains import SequentialChain
 from langchain.memory import ConversationBufferMemory
+from streamlit.logger import get_logger
+import logging
+import threading
 
 def get_first_llm_response(llm):
     template = "Ask me a question that will help me narrow down my next travel destination"
@@ -47,6 +50,13 @@ def reset_state():
         del st.session_state['messages']
     if st.session_state['next_question']:
         del st.session_state['next_question']
+
+############################################
+
+LOGGER = get_logger(__file__)
+LOGGER.setLevel(logging.DEBUG)
+
+LOGGER.debug(f'start of streamlit_test, {threading.get_ident()}')
 
 # main code
 st.title('Travel assistant')
@@ -133,3 +143,5 @@ elif st.session_state['count'] > 100:
     del st.session_state['llm_chain']
     del st.session_state['messages']
     del st.session_state['next_question']
+
+LOGGER.debug(f'end of streamlit_test, {threading.get_ident()}')
