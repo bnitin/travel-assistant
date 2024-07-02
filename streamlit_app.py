@@ -30,7 +30,7 @@ def get_llm_chain(llm):
     conversation = LLMChain(
         llm=llm,
         prompt=prompt_template,
-        verbose=True,
+        verbose=False,
         memory=memory
     )
     return conversation
