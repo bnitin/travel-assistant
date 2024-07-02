@@ -92,20 +92,21 @@ st.text(st.session_state['count'])
 
 # let the user know what we intend to do if they are interacting with this for the first time
 if st.session_state.count == 0:
-    st.session_state.count = 1
     next_question = get_first_llm_response(llm)
+    
 elif st.session_state.count < 4:
     history = '\n'.join(messages)        
     next_question = llm_chain.invoke({"chat_history" : history})["text"]
+    
+# check if we need to get more input from the user
+if st.session_state.count < 5:
     messages.append(next_question)
     st.session_state.messages = messages
     st.session_state.next_question = next_question.strip()
     st.session_state.count += 1
-
-# check if we need to get more input from the user
-if st.session_state.count < 5:
-    st.text(st.session_state.next_question)
-    prompt = st.text_input(label=st.session_state.next_question)
+    
+    st.text(next_question)
+    prompt = st.text_input(label=next_question)
     if prompt:
         messages = st.session_state.messages
         messages.append(prompt)
