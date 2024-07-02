@@ -116,9 +116,7 @@ if st.session_state['count'] == 0:
 if st.session_state['count'] < 5:
     #st.text(st.session_state['messages'])
     st.text(st.session_state.next_question)
-    prompt = st.text_input(label="user input", 
-                            value=st.session_state['next_question'],
-                            label_visibility="hidden")
+    prompt = st.text_input(label=st.session_state['next_question'])
     #prompt = st.text_input("")
     if prompt:
         messages = st.session_state['messages']
