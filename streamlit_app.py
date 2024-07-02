@@ -129,13 +129,12 @@ if count < 3:
         st.session_state['messages'] = messages
         count += 1
         st.session_state['count'] = count
-        if count < 4:
-            with st.spinner(""):
-                time.sleep(2)
-            next_question = llm_chain.invoke({"chat_history" : messages, "response" : prompt})["text"]
-            st.session_state['next_question'] = next_question
-            #st.text("aaa: " + next_question)
-            messages.append(next_question)
+        #if count < 4:
+        #    with st.spinner(""):
+        #        time.sleep(2)
+        next_question = llm_chain.invoke({"chat_history" : messages, "response" : prompt})["text"]
+        st.session_state['next_question'] = next_question
+        messages.append(next_question)
         
 else:
     # lets let the user know their travel options
