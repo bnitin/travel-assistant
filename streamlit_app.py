@@ -13,32 +13,17 @@ def get_first_llm_response(llm):
     return response.strip().strip('\"')
     
 def get_llm_chain(llm):
-    template = """You are a chatbot having a conversation with a human. 
-                You will advise the human on choosing a travel destination
-                If there is no prior chat history, then ask a random question to help narrow
-                down the travel destination.
-
-    Previous conversation regarding travel preference:
-    {chat_history}
-
-    Human response based on conversation: {response}
-    
-    New question to human based on conversation:
-    Question:"""
-
-    #prompt_template = PromptTemplate.from_template(template)
-
     prompt_template = PromptTemplate(    
         template="""= You are a chatbot having a conversation with a human. 
                 You will advise the human on choosing a travel destination
                 If there is no prior chat history, then ask a random question to help narrow
                 down the travel destination.
 
-        Previous conversation regarding travel preference: {chat_history}
+        Previous conversation regarding travel preference: {chat_history} {response}
         
         New question to human based on conversation:
         """,
-        input_variables=['chat_history', 'prompt']
+        input_variables=['chat_history', 'response']
     )
     
     
@@ -107,12 +92,12 @@ if 'messages' not in st.session_state:
 else:
     messages = st.session_state['messages']
 
-#st.text(count)
-#st.text(messages)
+st.text("I am your travel assistant. Let's help you choose your next travel destination")
+st.text(count)
+st.text(messages)
 
 # let the user know what we intend to do if they are interacting with this for the first time
 if count == 0:
-    st.text("I am your travel assistant. Let's help you choose your next travel destination")
     next_question = get_first_llm_response(llm)
     messages.append(next_question)
     st.session_state['next_question'] = next_question
