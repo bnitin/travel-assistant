@@ -103,7 +103,7 @@ if count == 0:
     st.session_state['count'] = count
 
 # check if we need to get more input from the user
-while count < 3:
+if count < 3:
     #st.text("bbbb: " + next_question)
     next_question = st.session_state['next_question']
     prompt = st.text_input(next_question)
