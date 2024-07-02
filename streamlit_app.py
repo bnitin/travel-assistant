@@ -52,6 +52,12 @@ def reset_state():
     if st.session_state.next_question:
         del st.session_state.next_question
 
+def update_prompt():
+    prompt = st.session_state.text_key
+    messages = st.session_state.messages
+    messages.append(prompt)
+    st.session_state.messages = messages
+    
 ############################################
 
 # main code
@@ -112,7 +118,7 @@ if next_question:
     st.text(messages)
     
     # get input from user
-    prompt = st.text_input(label=next_question)
+    prompt = st.text_input(label=next_question, on_change=update_prompt, key='text_key')
     if prompt:
         messages = st.session_state.messages
         messages.append(prompt)
