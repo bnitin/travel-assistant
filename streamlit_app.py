@@ -82,12 +82,12 @@ llm_chain = None
 # initialize and setup session state
 if 'llm_chain' not in st.session_state:
     llm_chain = get_llm_chain(llm)
-    st.session_state['llm_chain'] = llm_chain
+    st.session_state.llm_chain = llm_chain
 else:
-    llm_chain = st.session_state['llm_chain']
+    llm_chain = st.session_state.llm_chain
     
 if 'count' not in st.session_state:
-    st.session_state['count'] = 0
+    st.session_state.count = 0
 
 if 'messages' not in st.session_state:
     st.session_state.messages = []
@@ -98,17 +98,10 @@ if 'next_question' not in st.session_state:
     st.session_state.next_question = ""
 
 st.text("I am your travel assistant. Let's help you choose your next travel destination")
-st.text(st.session_state['count'])
+st.text(st.session_state.count)
 
 # let the user know what we intend to do if they are interacting with this for the first time
 next_question = get_next_question(llm, st.session_state.count, messages)
-
-#if st.session_state.count == 0:
-#    next_question = get_first_llm_response(llm)
-    
-#elif st.session_state.count < 4:
-#    history = '\n'.join(messages)        
-#    next_question = llm_chain.invoke({"chat_history" : history})["text"]
     
 # check if we need to get more input from the user
 if next_question:
@@ -126,13 +119,13 @@ if next_question:
 
 else:
     # lets let the user know their travel options
+    st.text(st.session_state.messages)
     #response = generate_travel_options(st.session_state['llm_chain'], messages)
     #travel_options = response['travel'].strip().split(",")
     st.write("** Top destinations for you **")
-    #st.write(messages)
     #for name in travel_options:
     #    st.write("--", name)
-    del st.session_state['count']
-    del st.session_state['llm_chain']
-    del st.session_state['messages']
-    del st.session_state['next_question']
+    del st.session_state.count
+    del st.session_state.llm_chain
+    del st.session_state.messages
+    del st.session_state.next_question
