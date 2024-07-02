@@ -82,51 +82,42 @@ else:
     
 if 'count' not in st.session_state:
     st.session_state['count'] = 0
-else:
-    count = st.session_state['count']
 
 if 'messages' not in st.session_state:
-    st.session_state['messages'] = messages
+    st.session_state['messages'] = []
 else:
     messages = st.session_state['messages']
-
-if 'next_question' in st.session_state:
-    next_question = st.session_state['next_question']
 
 st.text("I am your travel assistant. Let's help you choose your next travel destination")
 st.text(count)
 
 # let the user know what we intend to do if they are interacting with this for the first time
-if count == 0:
+if st.session_state['count'] == 0:
     next_question = get_first_llm_response(llm)
-    messages.append(next_question)
+    st.session_state['messages'] = st.session_state['messages'].append(next_question)
     st.session_state['next_question'] = next_question.strip()
-    count += 1
-    st.session_state['count'] = count
+    st.session_state['count'] = st.session_state['count'] + 1
 
 # check if we need to get more input from the user
-if count < 3:
-    next_question = st.session_state['next_question']
-    st.text("bbbb: " + next_question)
-    prompt = st.chat_input(next_question)
+if st.session_state['count'] < 3:
+    st.text("bbbb: " + st.session_state['next_question'])
+    prompt = st.text_input(st.session_state['next_question'])
     if prompt:
-        messages.append(prompt)
-        st.session_state['messages'] = messages
-        count += 1
-        st.session_state['count'] = count
-        history = '\n'.join(messages)
+        st.session_state['messages'] = st.session_state['messages'].append(prompt)
+        #st.session_state['messages'] = messages
+        st.session_state['count'] = st.session_state['count'] + 1
+        history = '\n'.join(st.session_state['messages'])
         next_question = llm_chain.invoke({"chat_history" : history})["text"]
         st.session_state['next_question'] = next_question.strip()
-        messages.append(next_question)
-        st.session_state['messages'] = messages
+        st.session_state['messages'] = st.session_state['messages'].append(next_question.strip())
         st.text(st.session_state['next_question'])
 
-if count > 100:
+if st.session_state['count'] > 100:
     # lets let the user know their travel options
     #response = generate_travel_options(st.session_state['llm_chain'], messages)
     #travel_options = response['travel'].strip().split(",")
     st.write("** Top destinations for you **")
-    st.write(messages)
+    #st.write(messages)
     #for name in travel_options:
     #    st.write("--", name)
     del st.session_state['count']
