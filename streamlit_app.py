@@ -56,7 +56,13 @@ def get_llm_chain(llm):
 
 def get_llm_chain_from_session() -> LLMChain:
     return st.session_state['llm_chain']
-    
+
+def reset_state():
+    del st.session_state['count']
+    del st.session_state['llm_chain']
+    del st.session_state['messages']
+    del st.session_state['next_question']
+
 
 # main code
 st.title('Travel assistant')
@@ -64,6 +70,7 @@ st.title('Travel assistant')
 # get open AI key from user
 with st.sidebar:
     openai_api_key = st.text_input("OpenAI API Key", key="chatbot_api_key", type="password")
+    st.button('New search', on_click=reset_state)
 
 if not openai_api_key:
         st.info("Please add your OpenAI API key to continue.")
