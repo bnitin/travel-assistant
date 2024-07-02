@@ -118,7 +118,7 @@ if count < 3:
     if prompt:
         st.session_state['next_question'] = next_question
         messages.append(prompt)
-        st.text(messages)
+        #st.text(messages)
         st.session_state['messages'] = messages
         count += 1
         st.session_state['count'] = count
