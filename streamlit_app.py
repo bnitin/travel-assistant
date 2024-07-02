@@ -115,6 +115,8 @@ if next_question:
     if prompt:
         messages = st.session_state.messages
         messages.append(prompt)
+        st.text(prompt)
+        st.text(messages)
         st.session_state.messages = messages
 
 else:
