@@ -107,8 +107,8 @@ if 'messages' not in st.session_state:
 else:
     messages = st.session_state['messages']
 
-st.text(count)
-st.text(messages)
+#st.text(count)
+#st.text(messages)
 
 # let the user know what we intend to do if they are interacting with this for the first time
 if count == 0:
