@@ -109,14 +109,14 @@ if next_question:
     st.session_state.messages = messages
     st.session_state.next_question = next_question.strip()
     st.session_state.count += 1
-
+    st.text(messages)
+    
     # get input from user
     prompt = st.text_input(label=next_question)
     if prompt:
         messages = st.session_state.messages
         messages.append(prompt)
         st.text(prompt)
-        st.text(messages)
         st.session_state.messages = messages
 
 if st.session_state.count > 100:
