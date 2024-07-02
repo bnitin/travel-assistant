@@ -131,5 +131,3 @@ elif st.session_state['count'] > 100:
     del st.session_state['llm_chain']
     del st.session_state['messages']
     del st.session_state['next_question']
-
-LOGGER.debug(f'end of streamlit_test, {threading.get_ident()}')
