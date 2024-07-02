@@ -94,7 +94,7 @@ st.text(count)
 # let the user know what we intend to do if they are interacting with this for the first time
 if st.session_state['count'] == 0:
     next_question = get_first_llm_response(llm)
-    st.session_state['messages'] = st.session_state['messages'].append(next_question)
+    st.session_state['messages'] = next_question
     st.session_state['next_question'] = next_question.strip()
     st.session_state['count'] = st.session_state['count'] + 1
 
@@ -103,10 +103,7 @@ if st.session_state['count'] < 3:
     st.text("bbbb: " + st.session_state['next_question'])
     prompt = st.text_input(st.session_state['next_question'])
     if prompt:
-        messages = st.session_state['messages']
-        messages.append(prompt)
-        #st.session_state['messages'] = st.session_state['messages'].append(prompt)
-        st.session_state['messages'] = messages
+        st.session_state['messages'] = st.session_state['messages'].append(prompt)
         st.session_state['count'] = st.session_state['count'] + 1
         history = '\n'.join(st.session_state['messages'])
         next_question = llm_chain.invoke({"chat_history" : history})["text"]
