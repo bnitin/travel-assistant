@@ -30,7 +30,7 @@ def get_llm_chain(llm):
     return conversation
 
 def get_llm_chain_from_session() -> LLMChain:
-    return st.session_state['llm_chain']
+    return st.session_state.llm_chain
 
 def get_next_question(llm, count, messages):
     if count == 0:
@@ -46,7 +46,7 @@ def reset_state():
     if st.session_state.count:
         del st.session_state.count
     if st.session_state.llm_chain:
-        del st.session_state.lm_chain
+        del st.session_state.llm_chain
     if st.session_state.messages:
         del st.session_state.messages
     if st.session_state.next_question:
