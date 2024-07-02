@@ -56,13 +56,13 @@ def get_llm_chain_from_session() -> LLMChain:
     return st.session_state['llm_chain']
 
 def reset_state():
-    if st.session_state['count']
+    if st.session_state['count']:
         del st.session_state['count']
-    if st.session_state['llm_chain']
+    if st.session_state['llm_chain']:
         del st.session_state['llm_chain']
-    if st.session_state['messages']
+    if st.session_state['messages']:
         del st.session_state['messages']
-    if st.session_state['next_question']
+    if st.session_state['next_question']:
         del st.session_state['next_question']
 
 # main code
