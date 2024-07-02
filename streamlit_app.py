@@ -38,7 +38,7 @@ def get_llm_chain(llm):
         
         New question to human based on conversation:
         """,
-        input_variables=['chat_history']
+        input_variables=['chat_history', 'prompt']
     )
     
     
