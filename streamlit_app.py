@@ -92,7 +92,6 @@ else:
 
 st.text("I am your travel assistant. Let's help you choose your next travel destination")
 st.text(count)
-st.text(messages)
 st.text(next_question)
 
 # let the user know what we intend to do if they are interacting with this for the first time
@@ -113,10 +112,8 @@ if count < 3:
         st.session_state['messages'] = messages
         count += 1
         st.session_state['count'] = count
-        st.text(messages)
         history = '\n'.join(messages)
         next_question = llm_chain.invoke({"chat_history" : history})["text"]
-        st.text(next_question)
         st.session_state['next_question'] = next_question
         messages.append(next_question)
         
