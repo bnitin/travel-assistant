@@ -89,7 +89,7 @@ else:
     messages = st.session_state['messages']
 
 st.text("I am your travel assistant. Let's help you choose your next travel destination")
-st.text(count)
+st.text(st.session_state['count'])
 
 # let the user know what we intend to do if they are interacting with this for the first time
 if st.session_state['count'] == 0:
