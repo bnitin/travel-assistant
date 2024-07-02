@@ -17,7 +17,7 @@ def get_llm_chain(llm):
         template="""= You are a chatbot having a conversation with a human. 
                 You will advise the human on choosing a travel destination
 
-        Previous conversation regarding travel preference: {chat_history}
+        Previous conversation regarding travel preference: {chat_history} {response}
         
         Ask the user a new question to help refine their travel destination:
         """,
