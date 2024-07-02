@@ -32,6 +32,16 @@ def get_llm_chain(llm):
 def get_llm_chain_from_session() -> LLMChain:
     return st.session_state['llm_chain']
 
+def get_next_question(llm, count, messages):
+    if count == 0:
+        return get_first_llm_response(llm)    
+    elif count < 4:
+        llm_chain = get_llm_chain_from_session()
+        history = '\n'.join(messages)        
+        return llm_chain.invoke({"chat_history" : history})["text"]
+    else:
+        return None
+    
 def reset_state():
     if st.session_state['count']:
         del st.session_state['count']
@@ -91,36 +101,30 @@ st.text("I am your travel assistant. Let's help you choose your next travel dest
 st.text(st.session_state['count'])
 
 # let the user know what we intend to do if they are interacting with this for the first time
-if st.session_state.count == 0:
-    next_question = get_first_llm_response(llm)
+next_question = get_next_question(llm, st.session_state.count, messages)
+
+#if st.session_state.count == 0:
+#    next_question = get_first_llm_response(llm)
     
-elif st.session_state.count < 4:
-    history = '\n'.join(messages)        
-    next_question = llm_chain.invoke({"chat_history" : history})["text"]
+#elif st.session_state.count < 4:
+#    history = '\n'.join(messages)        
+#    next_question = llm_chain.invoke({"chat_history" : history})["text"]
     
 # check if we need to get more input from the user
-if st.session_state.count < 5:
+if next_question:
     messages.append(next_question)
     st.session_state.messages = messages
     st.session_state.next_question = next_question.strip()
     st.session_state.count += 1
-    
-    st.text(next_question)
+
+    # get input from user
     prompt = st.text_input(label=next_question)
     if prompt:
         messages = st.session_state.messages
         messages.append(prompt)
         st.session_state.messages = messages
-        #st.session_state.count += 1
-        #history = '\n'.join(messages)
-        #st.session_state.next_question = "xyz"
-        #next_question = llm_chain.invoke({"chat_history" : history})["text"]
-        #st.session_state.next_question = next_question.strip()
-        #messages.append(next_question.strip())
-        #st.session_state.messages = messages
-        #st.text(st.session_state.next_question)
 
-elif st.session_state['count'] > 100:
+else:
     # lets let the user know their travel options
     #response = generate_travel_options(st.session_state['llm_chain'], messages)
     #travel_options = response['travel'].strip().split(",")
