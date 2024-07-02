@@ -105,16 +105,17 @@ if st.session_state['count'] < 3:
     st.text(st.session_state['messages'])
     prompt = st.text_input(st.session_state['next_question'])
     if prompt:
-        st.session_state['messages'] = st.session_state['messages'].append(prompt)
+        messages = st.session_state['messages']
+        messages.append(prompt)
+        st.session_state['messages'] = messages
         st.session_state['count'] = st.session_state['count'] + 1
-        #messages = st.session_state['messages']
-        #st.text(messages)
-        #history = '\n'.join(messages)
-        history = st.session_state['messages']
+        history = '\n'.join(messages)
+        #history = st.session_state['messages']
         st.text(history)
         next_question = llm_chain.invoke({"chat_history" : history})["text"]
         st.session_state['next_question'] = next_question.strip()
-        st.session_state['messages'] = st.session_state['messages'].append(next_question.strip())
+        messages.append(next_question.strip())
+        st.session_state['messages'] = messages
         st.text(st.session_state['next_question'])
 
 if st.session_state['count'] > 100:
