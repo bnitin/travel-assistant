@@ -105,24 +105,19 @@ next_question = get_next_question(llm, st.session_state.count, messages)
     
 # check if we need to get more input from the user
 if next_question:
-    #st.text(messages)
-    #messages.append(next_question)
-    #st.session_state.messages = messages
-    #st.session_state.next_question = next_question.strip()
-    
+    messages.append(next_question)
+    st.session_state.messages = messages
+    st.session_state.next_question = next_question.strip()
+    st.session_state.count += 1
+
     # get input from user
     prompt = st.text_input(label=next_question)
     if prompt:
-        st.text(messages)
-        messages.append(next_question)
-        st.session_state.messages = messages
-
-        st.session_state.count += 1
         messages = st.session_state.messages
         messages.append(prompt)
         st.text(prompt)
         st.text(messages)
-        st.session_state.messages = messages        
+        st.session_state.messages = messages
 
 if st.session_state.count > 100:
     # lets let the user know their travel options
