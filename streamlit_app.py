@@ -105,14 +105,18 @@ next_question = get_next_question(llm, st.session_state.count, messages)
     
 # check if we need to get more input from the user
 if next_question:
-    st.text(messages)
-    messages.append(next_question)
-    st.session_state.messages = messages
+    #st.text(messages)
+    #messages.append(next_question)
+    #st.session_state.messages = messages
     #st.session_state.next_question = next_question.strip()
     
     # get input from user
     prompt = st.text_input(label=next_question)
     if prompt:
+        st.text(messages)
+        messages.append(next_question)
+        st.session_state.messages = messages
+
         st.session_state.count += 1
         messages = st.session_state.messages
         messages.append(prompt)
