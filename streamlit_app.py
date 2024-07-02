@@ -103,7 +103,7 @@ if count == 0:
     st.session_state['count'] = count
 
 # check if we need to get more input from the user
-if count < 3:
+while count < 3:
     #st.text("bbbb: " + next_question)
     next_question = st.session_state['next_question']
     prompt = st.text_input(next_question)
@@ -117,8 +117,8 @@ if count < 3:
         st.text(next_question)
         st.session_state['next_question'] = next_question
         messages.append(next_question)
-        
-else:
+
+if 3 > 2:
     # lets let the user know their travel options
     #response = generate_travel_options(st.session_state['llm_chain'], messages)
     #travel_options = response['travel'].strip().split(",")
