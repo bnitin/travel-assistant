@@ -16,12 +16,10 @@ def get_llm_chain(llm):
     prompt_template = PromptTemplate(    
         template="""= You are a chatbot having a conversation with a human. 
                 You will advise the human on choosing a travel destination
-                If there is no prior chat history, then ask a random question to help narrow
-                down the travel destination.
 
-        Previous conversation regarding travel preference: {chat_history} {response}
+        Previous conversation regarding travel preference: {chat_history}
         
-        New question to human based on conversation:
+        Ask the user a new question to help refine their travel destination:
         """,
         input_variables=['chat_history', 'response']
     )
@@ -115,7 +113,7 @@ if count < 3:
         st.session_state['messages'] = messages
         count += 1
         st.session_state['count'] = count
-        next_question = llm_chain.run({"chat_history" : messages, "response" : prompt})["text"]
+        next_question = llm_chain.run({'chat_history' : messages, 'response' : prompt})["text"]
         st.session_state['next_question'] = next_question
         messages.append(next_question)
         
