@@ -94,7 +94,8 @@ st.text(count)
 # let the user know what we intend to do if they are interacting with this for the first time
 if st.session_state['count'] == 0:
     next_question = get_first_llm_response(llm)
-    st.session_state['messages'] = next_question
+    messages.append(next_question)
+    st.session_state['messages'] = messages
     st.session_state['next_question'] = next_question.strip()
     st.session_state['count'] = st.session_state['count'] + 1
 
