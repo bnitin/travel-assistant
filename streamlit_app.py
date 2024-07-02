@@ -21,7 +21,7 @@ def get_llm_chain(llm):
         
         Ask the user a new question to help refine their travel destination:
         """,
-        input_variables=['chat_history']
+        input_variables=["chat_history"]
     )
     
     
