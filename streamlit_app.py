@@ -115,6 +115,7 @@ if next_question:
     prompt = st.text_input(label=next_question, on_change=update_prompt, key='text_key')
 
 else:
+    st.text(messages)
     # lets let the user know their travel options
     #st.text(st.session_state.messages)
     #response = generate_travel_options(llm, messages)
