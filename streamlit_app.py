@@ -87,7 +87,7 @@ def generate_travel_options(llm, user_pref):
     )
 
     name_chain = LLMChain(llm=llm,
-                          prompt=prompt_template_name,
+                          prompt=prompt_template,
                           output_key='travel')
 
     chain = SequentialChain(
