@@ -10,7 +10,7 @@ def get_first_llm_response(llm):
     response = llm.predict("Ask me a question that will help me narrow down my next travel destination")
     return response.strip().strip('\"')
     
-def get_llm_chain(llm):
+def get_llm_chain_for_questions(llm):
     prompt_template = PromptTemplate(    
         template="""= You are a chatbot having a conversation with a human. 
                 You will advise the human on choosing a travel destination
@@ -116,7 +116,7 @@ max_questions = 5
 
 # initialize and setup session state
 if 'llm_chain' not in st.session_state:
-    llm_chain = get_llm_chain(llm)
+    llm_chain = get_llm_chain_for_questions(llm)
     st.session_state.llm_chain = llm_chain
 else:
     llm_chain = st.session_state.llm_chain
