@@ -104,14 +104,8 @@ def generate_travel_options(llm, user_pref, question_count):
 # main code
 st.title('Travel assistant')
 
+# Initializations
 llm = initialize_llm()
-
-# Initialize Chat history
-chat_history = []
-prompt = ""
-count = 0
-next_question = None
-llm_chain = None
 max_questions = 5
 
 # initialize and setup session state
