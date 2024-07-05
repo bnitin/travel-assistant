@@ -76,7 +76,7 @@ def initialize_llm():
 
 def generate_travel_options(llm, user_pref):
     prompt_template = PromptTemplate(
-        input_variables=['user_pref'
+        input_variables=['user_pref'],
         template = """I would like to go on vacation. Use these 4 questions and answers to 
                         determine 3 places for me to travel to. 
                         Write a list of activities that we can do at each of these spots using these 
