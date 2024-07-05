@@ -44,11 +44,11 @@ def get_next_question(llm, count, messages, max_questions):
         return None
     
 def reset_state():
-    if st.session_state.count:
+    if 'count' in st.session_state:
         del st.session_state.count
-    if st.session_state.llm_chain:
+    if 'llm_chain' in st.session_state:
         del st.session_state.llm_chain
-    if st.session_state.messages:
+    if 'messages' in st.session_state:
         del st.session_state.messages
 
 def update_prompt():
