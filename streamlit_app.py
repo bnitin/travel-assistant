@@ -73,16 +73,16 @@ def initialize_llm():
     
     return llm
 
-def generate_travel_options(llm, user_pref):
+def generate_travel_options(llm, user_pref, question_count):
     prompt_template = PromptTemplate(
-        input_variables=['user_pref'],
-        template = """I would like to go on vacation. Use these 4 questions and answers to 
+        input_variables=['question_count', 'user_pref'],
+        template = """I would like to go on vacation. Use these {} questions and answers to 
                         determine 3 places for me to travel to. 
                         Write a list of activities that we can do at each of these spots using these 
                         questions and answers Also write a brief paragraph summarizing the places.
 
-                        here are the questiions: {}
-                    """.format(user_pref)
+                        here are the questions: {}
+                    """.format(question_count, user_pref)
     )
 
     name_chain = LLMChain(llm=llm,
@@ -91,11 +91,11 @@ def generate_travel_options(llm, user_pref):
 
     chain = SequentialChain(
         chains=[name_chain],
-        input_variables=['user_pref'],
+        input_variables=['question_count', 'user_pref'],
         output_variables=['travel']
     )
 
-    response = chain({'user_pref': user_pref})
+    response = chain({'question_count' : question_count, 'user_pref': user_pref})
     return response['travel']
 
 
@@ -130,7 +130,6 @@ else:
     messages = st.session_state.messages
 
 st.text("I am your travel assistant. Let's help you choose your next travel destination")
-#st.text(st.session_state.count)
 
 # let the user know what we intend to do if they are interacting with this for the first time
 next_question = get_next_question(llm, st.session_state.count, messages, max_questions)
@@ -140,15 +139,13 @@ if next_question:
     messages.append(next_question)
     st.session_state.messages = messages
     st.session_state.count += 1
-    #st.text(messages)
     
     # get input from user
     prompt = st.text_input(label=next_question, on_change=update_prompt, key='text_key')
 
 else:
     # lets let the user know their travel options
-    #st.text(st.session_state.messages)
-    travel_options = generate_travel_options(llm, messages)
+    travel_options = generate_travel_options(llm, messages, max_questions)
     st.write("** Top 3 destinations for you **")
     st.write(travel_options)
     
