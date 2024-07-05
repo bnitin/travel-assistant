@@ -131,7 +131,7 @@ else:
     messages = st.session_state.messages
 
 st.text("I am your travel assistant. Let's help you choose your next travel destination")
-st.text(st.session_state.count)
+#st.text(st.session_state.count)
 
 # let the user know what we intend to do if they are interacting with this for the first time
 next_question = get_next_question(llm, st.session_state.count, messages, max_questions)
@@ -141,13 +141,12 @@ if next_question:
     messages.append(next_question)
     st.session_state.messages = messages
     st.session_state.count += 1
-    st.text(messages)
+    #st.text(messages)
     
     # get input from user
     prompt = st.text_input(label=next_question, on_change=update_prompt, key='text_key')
 
 else:
-    st.text(messages)
     # lets let the user know their travel options
     #st.text(st.session_state.messages)
     travel_options = generate_travel_options(llm, messages)
