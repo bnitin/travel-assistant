@@ -120,8 +120,7 @@ if 'count' not in st.session_state:
 
 if 'chat_history' not in st.session_state:
     st.session_state.chat_history = []
-else:
-    chat_history = st.session_state.chat_history
+chat_history = st.session_state.chat_history
 
 st.text("I am your travel assistant. Let's help you choose your next travel destination")
 
