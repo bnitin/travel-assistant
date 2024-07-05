@@ -3,6 +3,7 @@ import time
 from langchain.llms import OpenAI
 from langchain.prompts import PromptTemplate
 from langchain.chains import LLMChain
+from langchain.chains import SequentialChain
 
 def get_first_llm_response(llm):
     template = "Ask me a question that will help me narrow down my next travel destination"
@@ -32,10 +33,10 @@ def get_llm_chain(llm):
 def get_llm_chain_from_session() -> LLMChain:
     return st.session_state.llm_chain
 
-def get_next_question(llm, count, messages):
+def get_next_question(llm, count, messages, max_questions):
     if count == 0:
         return get_first_llm_response(llm)    
-    elif count < 4:
+    elif count <= max_questions:
         llm_chain = get_llm_chain_from_session()
         history = '\n'.join(messages)        
         return llm_chain.invoke({"chat_history" : history})["text"]
@@ -55,26 +56,56 @@ def update_prompt():
     messages = st.session_state.messages
     messages.append(prompt)
     st.session_state.messages = messages
+
+def initialize_llm():
+    # get open AI key from user
+    with st.sidebar:
+        openai_api_key = st.text_input("OpenAI API Key", key="chatbot_api_key", type="password")
+        st.button('New search', on_click=reset_state)
     
+    if not openai_api_key:
+        st.info("Please add your OpenAI API key to continue.")
+        st.stop()
+        
+    # initialize Open AI
+    import os
+    os.environ['OPENAI_API_KEY'] = openai_api_key
+    llm = OpenAI(model_name="gpt-3.5-turbo-instruct", temperature = 0.6)
+    
+    return llm
+
+def generate_travel_options(llm, user_pref):
+    prompt_template = PromptTemplate(
+        input_variables=['user_pref'
+        template = """I would like to go on vacation. Use these 4 questions and answers to 
+                        determine 3 places for me to travel to. 
+                        Write a list of activities that we can do at each of these spots using these 
+                        questions and answers Also write a brief paragraph summarizing the places.
+
+                        here are the questiions: {}
+                    """.format(user_pref)
+    )
+
+    name_chain = LLMChain(llm=llm,
+                          prompt=prompt_template_name,
+                          output_key='travel')
+
+    chain = SequentialChain(
+        chains=[name_chain],
+        input_variables=['user_pref'],
+        output_variables=['travel']
+    )
+
+    response = chain({'user_pref': user_pref})
+    return response['travel']
+
+
 ############################################
 
 # main code
 st.title('Travel assistant')
 
-# get open AI key from user
-with st.sidebar:
-    openai_api_key = st.text_input("OpenAI API Key", key="chatbot_api_key", type="password")
-    st.button('New search', on_click=reset_state)
-
-if not openai_api_key:
-    st.info("Please add your OpenAI API key to continue.")
-    st.stop()
-    
-# initialize Open AI
-import os
-os.environ['OPENAI_API_KEY'] = openai_api_key
-llm = OpenAI(model_name="gpt-3.5-turbo-instruct", temperature = 0.6)
-
+llm = initialize_llm()
 
 # Initialize Chat history
 messages = []
@@ -82,6 +113,7 @@ prompt = ""
 count = 0
 next_question = None
 llm_chain = None
+max_questions = 5
 
 # initialize and setup session state
 if 'llm_chain' not in st.session_state:
@@ -102,7 +134,7 @@ st.text("I am your travel assistant. Let's help you choose your next travel dest
 st.text(st.session_state.count)
 
 # let the user know what we intend to do if they are interacting with this for the first time
-next_question = get_next_question(llm, st.session_state.count, messages)
+next_question = get_next_question(llm, st.session_state.count, messages, max_questions)
     
 # check if we need to get more input from the user
 if next_question:
@@ -118,11 +150,9 @@ else:
     st.text(messages)
     # lets let the user know their travel options
     #st.text(st.session_state.messages)
-    #response = generate_travel_options(llm, messages)
-    #travel_options = response['travel'].strip().split(",")
-    st.write("** Top destinations for you **")
-    #for name in travel_options:
-    #    st.write("--", name)
+    travel_options = generate_travel_options(llm, messages)
+    st.write("** Top 3 destinations for you **")
+    st.write(travel_options)
     
     # cleanup state
     reset_state()
