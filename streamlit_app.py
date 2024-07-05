@@ -32,12 +32,12 @@ def get_llm_chain(llm):
 def get_llm_chain_from_session() -> LLMChain:
     return st.session_state.llm_chain
 
-def get_next_question(llm, count, messages, max_questions):
+def get_next_question(llm, count, chat_history, max_questions):
     if count == 0:
         return get_first_llm_response(llm)    
     elif count <= max_questions:
         llm_chain = get_llm_chain_from_session()
-        history = '\n'.join(messages)        
+        history = '\n'.join(chat_history)        
         return llm_chain.invoke({"chat_history" : history})["text"]
     else:
         return None
@@ -47,14 +47,14 @@ def reset_state():
         del st.session_state.count
     if 'llm_chain' in st.session_state:
         del st.session_state.llm_chain
-    if 'messages' in st.session_state:
-        del st.session_state.messages
+    if 'chat_history' in st.session_state:
+        del st.session_state.chat_history
 
 def update_prompt():
     prompt = st.session_state.text_key
-    messages = st.session_state.messages
-    messages.append(prompt)
-    st.session_state.messages = messages
+    chat_history = st.session_state.chat_history
+    chat_history.append(prompt)
+    st.session_state.chat_history = chat_history
 
 def initialize_llm():
     # get open AI key from user
@@ -107,7 +107,7 @@ st.title('Travel assistant')
 llm = initialize_llm()
 
 # Initialize Chat history
-messages = []
+chat_history = []
 prompt = ""
 count = 0
 next_question = None
@@ -124,20 +124,20 @@ else:
 if 'count' not in st.session_state:
     st.session_state.count = 0
 
-if 'messages' not in st.session_state:
-    st.session_state.messages = []
+if 'chat_history' not in st.session_state:
+    st.session_state.chat_history = []
 else:
-    messages = st.session_state.messages
+    chat_history = st.session_state.chat_history
 
 st.text("I am your travel assistant. Let's help you choose your next travel destination")
 
 # let the user know what we intend to do if they are interacting with this for the first time
-next_question = get_next_question(llm, st.session_state.count, messages, max_questions)
+next_question = get_next_question(llm, st.session_state.count, chat_history, max_questions)
     
 # check if we need to get more input from the user
 if next_question:
-    messages.append(next_question)
-    st.session_state.messages = messages
+    chat_history.append(next_question)
+    st.session_state.chat_history = chat_history
     st.session_state.count += 1
     
     # get input from user
@@ -145,7 +145,7 @@ if next_question:
 
 else:
     # lets let the user know their travel options
-    travel_options = generate_travel_options(llm, messages, max_questions)
+    travel_options = generate_travel_options(llm, chat_history, max_questions)
     st.write("** Top 3 destinations for you **")
     st.write(travel_options)
     
